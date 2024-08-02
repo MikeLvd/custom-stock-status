@@ -41,11 +41,11 @@ class CustomStockStatusHandler
             ),
             'instore' => array(
                 'label' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status')
+                'message' => esc_html__('Το προϊόν είναι ετοιμοπαράδοτο', 'custom-stock-delivery-status')
             ),
             'discontinued' => array(
                 'label' => esc_html__('Καταργήθηκε', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Αυτό το προϊόν έχει καταργηθεί απο τον κατασκευαστή', 'custom-stock-delivery-status')
+                'message' => esc_html__('Το προϊόν έχει καταργηθεί απο τον κατασκευαστή', 'custom-stock-delivery-status')
             )
         );
     }
@@ -62,7 +62,8 @@ class CustomStockStatusHandler
     {
         $stock_status = $product->get_stock_status();
         if (array_key_exists($stock_status, $this->custom_stock_statuses)) {
-            return $this->custom_stock_statuses[$stock_status]['message'];
+            $message = $this->custom_stock_statuses[$stock_status]['message'];
+            return '<span class="availability-label">Διαθεσιμότητα:</span> <span class="availability-status">' . esc_html($message) . '</span>';
         }
         return $availability;
     }

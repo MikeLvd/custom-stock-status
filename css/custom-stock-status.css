@@ -1,14 +1,128 @@
 /* custom-stock-status.css */
-/* Targeting WooCommerce product availability elements specifically */
-.woocommerce div.product p.stock.discontinued::before,
-.woocommerce-page div.product p.stock.discontinued::before {
-    content: "\f112"; /* X icon from the theme icon library */
+
+/* General styles for stock status elements */
+.woocommerce div.product p.stock,
+.woocommerce-page div.product p.stock {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #1B262C;
+    border-style: dashed;
+}
+
+/* Style for availability label */
+.availability-label {
+    font-weight: bold;
+    color: #1B262C; /* Adjust the color as needed */
+}
+
+/* Style for availability status */
+.availability-status {
+    font-weight: 600;
+}
+
+/* Style for 'instock' status */
+.woocommerce div.product p.stock.instock .availability-status,
+.woocommerce-page div.product p.stock.instock .availability-status {
+    color: #28a745; /* Green color */
+}
+
+
+/* Style for 'instock' status with icon */
+.woocommerce div.product p.stock.instock::after,
+.woocommerce-page div.product p.stock.instock::after {
+    content: "\f107"; /* X icon from the theme icon library */
     font-family: "woodmart-font";
     font-weight: 400;
-    font-size: 22px;
-    color: #ff0000; /* Red color for the icon */
-    margin-right: 5px; /* Space between icon and text */
-    vertical-align: middle; /* Align icon with text */
-    position: relative; /* Position relative for fine control */
-    top: -1px; /* Adjust this value to fine-tune vertical alignment */
+    font-size: 20px;
+    color: #28a745;
+    margin-left: 5px;
+    vertical-align: middle;
+    position: relative;
+    line-height: 1;
+    top: -2px;
+}
+
+/* Style for 'outofstock' status */
+.woocommerce div.product p.stock.outofstock .availability-status,
+.woocommerce-page div.product p.stock.outofstock .availability-status {
+    color: #dc3545; /* Red color */
+}
+
+/* Style for 'outofstock' status with icon */
+.woocommerce div.product p.stock.outofstock::after,
+.woocommerce-page div.product p.stock.outofstock::after {
+    content: "\f100"; /* X icon from the theme icon library */
+    font-family: "woodmart-font";
+    font-weight: 400;
+    font-size: 20px;
+    color: #dc3545;
+    margin-left: 5px;
+    vertical-align: middle;
+    position: relative;
+    line-height: 1;
+    top: 0px;
+}
+
+/* Style for 'onbackorder' status */
+.woocommerce div.product p.stock.onbackorder .availability-status,
+.woocommerce-page div.product p.stock.onbackorder .availability-status {
+    color: #0F4C75;
+}
+
+/* Style for 'onbackorder' status with icon */
+.woocommerce div.product p.stock.onbackorder::after,
+.woocommerce-page div.product p.stock.onbackorder::after {
+    content: "\f100"; /* X icon from the theme icon library */
+    font-family: "woodmart-font";
+    font-weight: 400;
+    font-size: 20px;
+    color: #0F4C75;
+    margin-left: 5px;
+    vertical-align: middle;
+    position: relative;
+    line-height: 1;
+    top: 0px;
+}
+
+/* Style for 'instore' status */
+.woocommerce div.product p.stock.instore .availability-status,
+.woocommerce-page div.product p.stock.instore .availability-status {
+    color: #28a745; /* Blue color */
+}
+
+/* Style for 'instore' status with icon */
+.woocommerce div.product p.stock.instore::after,
+.woocommerce-page div.product p.stock.instore::after {
+    content: "\f146"; /* X icon from the theme icon library */
+    font-family: "woodmart-font";
+    font-weight: 400;
+    font-size: 20px;
+    color: #28a745;
+    margin-left: 5px;
+    vertical-align: middle;
+    position: relative;
+    line-height: 1;
+    top: -1px;
+}
+
+/* Style for 'discontinued' status */
+.woocommerce div.product p.stock.discontinued .availability-status,
+.woocommerce-page div.product p.stock.discontinued .availability-status {
+    color: #ff0000; /* Red color */
+}
+
+/* Style for 'discontinued' status with icon */
+.woocommerce div.product p.stock.discontinued::after,
+.woocommerce-page div.product p.stock.discontinued::after {
+    content: "\f112";
+    font-family: "woodmart-font";
+    font-weight: 400;
+    font-size: 20px;
+    color: #ff0000;
+    margin-left: 5px;
+    vertical-align: middle;
+    line-height: 1;
+    position: relative;
+    top: 0px;
 }
