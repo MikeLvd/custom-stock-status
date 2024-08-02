@@ -4,7 +4,7 @@
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -29,23 +29,23 @@ class CustomStockStatusHandler
         $this->custom_stock_statuses = array(
             'instock' => array(
                 'label' => esc_html__('Σε απόθεμα', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Παράδoση 1 έως 3 ημέρες', 'custom-stock-delivery-status')
+                'message' => esc_html__('1 έως 3 ημέρες', 'custom-stock-delivery-status')
             ),
             'outofstock' => array(
                 'label' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Το προϊόν έχει εξαντληθεί', 'custom-stock-delivery-status')
+                'message' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status')
             ),
             'onbackorder' => array(
                 'label' => esc_html__('Προπαραγγελία', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Κατόπιν παραγγελίας - έως 30 ημέρες', 'custom-stock-delivery-status')
+                'message' => esc_html__('Κατόπιν παραγγελίας', 'custom-stock-delivery-status')
             ),
             'instore' => array(
                 'label' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Το προϊόν είναι ετοιμοπαράδοτο', 'custom-stock-delivery-status')
+                'message' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status')
             ),
             'discontinued' => array(
                 'label' => esc_html__('Καταργήθηκε', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Το προϊόν έχει καταργηθεί απο τον κατασκευαστή', 'custom-stock-delivery-status')
+                'message' => esc_html__('Κατηργημένο', 'custom-stock-delivery-status')
             )
         );
     }
