@@ -1,0 +1,14 @@
+/* custom-stock-status.css */
+/* Targeting WooCommerce product availability elements specifically */
+.woocommerce div.product p.stock.discontinued::before,
+.woocommerce-page div.product p.stock.discontinued::before {
+    content: "\f112"; /* X icon from the theme icon library */
+    font-family: "woodmart-font";
+    font-weight: 400;
+    font-size: 22px;
+    color: #ff0000; /* Red color for the icon */
+    margin-right: 5px; /* Space between icon and text */
+    vertical-align: middle; /* Align icon with text */
+    position: relative; /* Position relative for fine control */
+    top: -1px; /* Adjust this value to fine-tune vertical alignment */
+}
