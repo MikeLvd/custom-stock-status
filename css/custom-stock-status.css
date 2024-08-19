@@ -18,18 +18,53 @@
 /* Style for availability status */
 .availability-status {
     font-size: 16px;
+    display: inline-block;
+    margin-right: 5px;
 }
 
 /* Common styles for status icons */
-.woocommerce div.product p.stock::after,
-.woocommerce-page div.product p.stock::after {
+.stock-icon::after {
     font-family: "woodmart-font";
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     margin-left: 5px;
     vertical-align: middle;
     line-height: 1;
     position: relative;
+}
+
+/* Tooltip container */
+.stock-icon {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.stock-icon::before {
+    content: attr(data-title);
+    visibility: hidden;
+    opacity: 0;
+    width: 110px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 135%;
+    left: 150%;
+    transform: translateX(-75%);
+    transition: opacity 0.3s;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: break-spaces;
+}
+
+/* Show the tooltip text on hover */
+.stock-icon:hover::before {
+    visibility: visible;
+    opacity: 1;
 }
 
 /* Style for 'instock' status */
@@ -38,9 +73,9 @@
     color: #31a053; /* Green color */
 }
 
-.woocommerce div.product p.stock.instock::after,
-.woocommerce-page div.product p.stock.instock::after {
-    content: "\f107"; /* Icon */
+.woocommerce div.product p.stock.instock .stock-icon::after,
+.woocommerce-page div.product p.stock.instock .stock-icon::after {
+    content: "\f100"; /* Icon */
     color: #31a053;
     top: -2px;
 }
@@ -51,8 +86,8 @@
     color: #dc3545; /* Red color */
 }
 
-.woocommerce div.product p.stock.outofstock::after,
-.woocommerce-page div.product p.stock.outofstock::after {
+.woocommerce div.product p.stock.outofstock .stock-icon::after,
+.woocommerce-page div.product p.stock.outofstock .stock-icon::after {
     content: "\f100"; /* Icon */
     color: #dc3545;
 }
@@ -63,8 +98,8 @@
     color: #d29604;
 }
 
-.woocommerce div.product p.stock.onbackorder::after,
-.woocommerce-page div.product p.stock.onbackorder::after {
+.woocommerce div.product p.stock.onbackorder .stock-icon::after,
+.woocommerce-page div.product p.stock.onbackorder .stock-icon::after {
     content: "\f100"; /* Icon */
     color: #d29604;
 }
@@ -75,9 +110,9 @@
     color: #31a053; /* Green color */
 }
 
-.woocommerce div.product p.stock.instore::after,
-.woocommerce-page div.product p.stock.instore::after {
-    content: "\f146"; /* Icon */
+.woocommerce div.product p.stock.instore .stock-icon::after,
+.woocommerce-page div.product p.stock.instore .stock-icon::after {
+    content: "\f100"; /* Icon */
     color: #31a053;
     top: -1px;
 }
@@ -88,8 +123,8 @@
     color: #ff0000; /* Red color */
 }
 
-.woocommerce div.product p.stock.discontinued::after,
-.woocommerce-page div.product p.stock.discontinued::after {
-    content: "\f112"; /* Icon */
+.woocommerce div.product p.stock.discontinued .stock-icon::after,
+.woocommerce-page div.product p.stock.discontinued .stock-icon::after {
+    content: "\f100"; /* Icon */
     color: #ff0000;
 }

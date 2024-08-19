@@ -4,7 +4,7 @@
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.0.4
+ * Version: 1.0.3
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -29,23 +29,28 @@ class CustomStockStatusHandler
         $this->custom_stock_statuses = array(
             'instock' => array(
                 'label' => esc_html__('Σε απόθεμα', 'custom-stock-delivery-status'),
-                'message' => esc_html__('1 έως 3 ημέρες', 'custom-stock-delivery-status')
+                'message' => esc_html__('1 έως 3 ημέρες', 'custom-stock-delivery-status'),
+                'tooltip' => esc_html__('Αυτό το προϊόν είναι σε απόθεμα και διαθέσιμο για άμεση αποστολή', 'custom-stock-delivery-status')
             ),
             'outofstock' => array(
                 'label' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status')
+                'message' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status'),
+                'tooltip' => esc_html__('Αυτό το προϊόν έχει εξαντληθεί προς το παρόν', 'custom-stock-delivery-status')
             ),
             'onbackorder' => array(
                 'label' => esc_html__('Προπαραγγελία', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Κατόπιν παραγγελίας', 'custom-stock-delivery-status')
+                'message' => esc_html__('Κατόπιν παραγγελίας', 'custom-stock-delivery-status'),
+                'tooltip' => esc_html__('Αυτό το προϊόν είναι κατόπιν παραγγελίας και θα αποσταλεί μόλις είναι διαθέσιμο', 'custom-stock-delivery-status')
             ),
             'instore' => array(
                 'label' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status')
+                'message' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
+                'tooltip' => esc_html__('Αυτό το προϊόν είναι ετοιμοπαράδοτο και άμεσα διαθέσιμο στο κατάστημά μας', 'custom-stock-delivery-status')
             ),
             'discontinued' => array(
                 'label' => esc_html__('Καταργήθηκε', 'custom-stock-delivery-status'),
-                'message' => esc_html__('Κατηργημένο', 'custom-stock-delivery-status')
+                'message' => esc_html__('Καταργήθηκε', 'custom-stock-delivery-status'),
+                'tooltip' => esc_html__('Αυτό το προϊόν έχει καταργηθεί απο τον κατασκευαστή και δεν είναι πλέον διαθέσιμο', 'custom-stock-delivery-status')
             )
         );
     }
@@ -63,7 +68,8 @@ class CustomStockStatusHandler
         $stock_status = $product->get_stock_status();
         if (array_key_exists($stock_status, $this->custom_stock_statuses)) {
             $message = $this->custom_stock_statuses[$stock_status]['message'];
-            return '<span class="availability-label">Διαθεσιμότητα:</span> <span class="availability-status">' . esc_html($message) . '</span>';
+            $tooltip = $this->custom_stock_statuses[$stock_status]['tooltip'];
+            return '<span class="availability-label">Διαθεσιμότητα:</span> <span class="availability-status">' . esc_html($message) . '</span><span class="stock-icon" data-title="' . esc_attr($tooltip) . '"></span>';
         }
         return $availability;
     }
