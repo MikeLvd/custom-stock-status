@@ -1,10 +1,9 @@
 <?php
-
 /**
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -30,7 +29,7 @@ class CustomStockStatusHandler
             'instock' => array(
                 'label' => esc_html__('Σε απόθεμα', 'custom-stock-delivery-status'),
                 'message' => esc_html__('1 έως 3 ημέρες', 'custom-stock-delivery-status'),
-                'tooltip' => esc_html__('Αυτό το προϊόν είναι σε απόθεμα και διαθέσιμο για άμεση αποστολή', 'custom-stock-delivery-status')
+                'tooltip' => esc_html__('Αυτό το προϊόν είναι σε απόθεμα στον προμηθευτή και διαθέσιμο για άμεση παραγγελία', 'custom-stock-delivery-status')
             ),
             'outofstock' => array(
                 'label' => esc_html__('Εξαντλημένο', 'custom-stock-delivery-status'),
