@@ -11,7 +11,6 @@
 class CustomStockStatusHandler
 {
     private $custom_stock_statuses = array();
-
     public function __construct()
     {
         add_action('init', array($this, 'initializeCustomStockStatuses'));
@@ -19,10 +18,8 @@ class CustomStockStatusHandler
         add_filter('woocommerce_get_availability_text', array($this, 'filterAvailabilityText'), 10, 2);
         add_filter('woocommerce_is_purchasable', array($this, 'validatePurchasable'), 10, 2);
         add_filter('woocommerce_get_availability_class', array($this, 'getStatusAvailabilityClass'), 10, 2);
-        add_action('woocommerce_process_product_meta', array($this, 'addCustomStockStatusMeta'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_custom_styles')); // Enqueue custom styles
     }
-
     public function initializeCustomStockStatuses()
     {
         $this->custom_stock_statuses = array(
@@ -53,7 +50,6 @@ class CustomStockStatusHandler
             )
         );
     }
-
     public function filterProductStockStatusOptions($status)
     {
         foreach ($this->custom_stock_statuses as $key => $value) {
@@ -61,7 +57,6 @@ class CustomStockStatusHandler
         }
         return $status;
     }
-
     public function filterAvailabilityText($availability, $product)
     {
         $stock_status = $product->get_stock_status();
@@ -72,7 +67,6 @@ class CustomStockStatusHandler
         }
         return $availability;
     }
-
     public function validatePurchasable($purchasable, $product)
     {
         if ('discontinued' === $product->get_stock_status()) {
@@ -80,7 +74,6 @@ class CustomStockStatusHandler
         }
         return $purchasable;
     }
-
     public function getStatusAvailabilityClass($availability_class, $product)
     {
         if (array_key_exists($product->get_stock_status(), $this->custom_stock_statuses)) {
@@ -88,22 +81,9 @@ class CustomStockStatusHandler
         }
         return $availability_class;
     }
-
-    public function addCustomStockStatusMeta($post_id)
-    {
-        $product = wc_get_product($post_id);
-        $stock_status = $product->get_stock_status();
-        if ('instore' === $stock_status || 'discontinued' === $stock_status) {
-            update_post_meta($post_id, '_custom_stock_status', $stock_status);
-        } else {
-            delete_post_meta($post_id, '_custom_stock_status');
-        }
-    }
-
     public function enqueue_custom_styles()
     {
         wp_enqueue_style('custom-stock-status-styles', plugins_url('/css/custom-stock-status.css', __FILE__));
     }
 }
-
 new CustomStockStatusHandler();
