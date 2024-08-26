@@ -1,4 +1,16 @@
-/* custom-stock-status.css */
+:root {
+    --green-color: #28a745;
+    --red-color: #dc3545;
+    --yellow-color: #d29604;
+    --dark-color: #1B262C;
+    --white-color: #ffffff;
+    --tooltip-background: #000000;
+    --tooltip-text-color: #ffffff;
+    --tooltip-padding: 5px 10px;
+    --tooltip-border-radius: 2px;
+    --font-family: "woodmart-font";
+    --font-size: 16px;
+}
 
 /* General styles for stock status elements */
 .woocommerce div.product p.stock,
@@ -6,25 +18,25 @@
     display: inline-block;
     padding: 5px 10px;
     border-radius: 3px;
-    border: 1px dashed #1B262C;
+    border: 1px dashed var(--dark-color);
 }
 
 /* Style for availability label */
 .availability-label {
-    font-size: 16px;
-    color: #1B262C; /* Adjust the color as needed */
+    font-size: var(--font-size);
+    color: var(--dark-color);
 }
 
 /* Style for availability status */
 .availability-status {
-    font-size: 16px;
+    font-size: var(--font-size);
     display: inline-block;
     margin-right: 5px;
 }
 
 /* Common styles for status icons */
 .stock-icon::after {
-    font-family: "woodmart-font";
+    font-family: var(--font-family);
     font-weight: 400;
     font-size: 18px;
     margin-left: 5px;
@@ -45,16 +57,16 @@
     visibility: hidden;
     opacity: 0;
     width: 110px;
-    background-color: black;
-    color: #fff;
+    background-color: var(--tooltip-background);
+    color: var(--tooltip-text-color);
     text-align: center;
-    border-radius: 2px;
-    padding: 5px 10px;
+    border-radius: var(--tooltip-border-radius);
+    padding: var(--tooltip-padding);
     position: absolute;
     z-index: 1;
     bottom: 135%;
-    left: 150%;
-    transform: translateX(-75%);
+    left: 50%;
+    transform: translateX(-50%);
     transition: opacity 0.3s;
     font-size: 14px;
     line-height: 1.4;
@@ -67,64 +79,56 @@
     opacity: 1;
 }
 
-/* Style for 'instock' status */
+/* Styles for stock status */
 .woocommerce div.product p.stock.instock .availability-status,
-.woocommerce-page div.product p.stock.instock .availability-status {
-    color: #31a053; /* Green color */
+.woocommerce-page div.product p.stock.instock .availability-status,
+.woocommerce div.product p.stock.instore .availability-status,
+.woocommerce-page div.product p.stock.instore .availability-status {
+    color: var(--green-color);
+}
+
+.woocommerce div.product p.stock.outofstock .availability-status,
+.woocommerce-page div.product p.stock.outofstock .availability-status,
+.woocommerce div.product p.stock.discontinued .availability-status,
+.woocommerce-page div.product p.stock.discontinued .availability-status {
+    color: var(--red-color);
+}
+
+.woocommerce div.product p.stock.onbackorder .availability-status,
+.woocommerce-page div.product p.stock.onbackorder .availability-status {
+    color: var(--yellow-color);
 }
 
 .woocommerce div.product p.stock.instock .stock-icon::after,
-.woocommerce-page div.product p.stock.instock .stock-icon::after {
-    content: "\f100"; /* Icon */
-    color: #31a053;
+.woocommerce-page div.product p.stock.instock .stock-icon::after,
+.woocommerce div.product p.stock.instore .stock-icon::after,
+.woocommerce-page div.product p.stock.instore .stock-icon::after {
+    content: "\f100";
+    color: var(--green-color);
     top: -2px;
 }
 
-/* Style for 'outofstock' status */
-.woocommerce div.product p.stock.outofstock .availability-status,
-.woocommerce-page div.product p.stock.outofstock .availability-status {
-    color: #dc3545; /* Red color */
-}
-
 .woocommerce div.product p.stock.outofstock .stock-icon::after,
-.woocommerce-page div.product p.stock.outofstock .stock-icon::after {
-    content: "\f100"; /* Icon */
-    color: #dc3545;
-}
-
-/* Style for 'onbackorder' status */
-.woocommerce div.product p.stock.onbackorder .availability-status,
-.woocommerce-page div.product p.stock.onbackorder .availability-status {
-    color: #d29604;
+.woocommerce-page div.product p.stock.outofstock .stock-icon::after,
+.woocommerce div.product p.stock.discontinued .stock-icon::after,
+.woocommerce-page div.product p.stock.discontinued .stock-icon::after {
+    content: "\f100";
+    color: var(--red-color);
 }
 
 .woocommerce div.product p.stock.onbackorder .stock-icon::after,
 .woocommerce-page div.product p.stock.onbackorder .stock-icon::after {
-    content: "\f100"; /* Icon */
-    color: #d29604;
+    content: "\f100";
+    color: var(--yellow-color);
 }
 
-/* Style for 'instore' status */
-.woocommerce div.product p.stock.instore .availability-status,
-.woocommerce-page div.product p.stock.instore .availability-status {
-    color: #31a053; /* Green color */
+/* Badge styles */
+.product-label.instore {
+    background-color: var(--green-color);
+    color: var(--white-color);
 }
 
-.woocommerce div.product p.stock.instore .stock-icon::after,
-.woocommerce-page div.product p.stock.instore .stock-icon::after {
-    content: "\f100"; /* Icon */
-    color: #31a053;
-    top: -1px;
-}
-
-/* Style for 'discontinued' status */
-.woocommerce div.product p.stock.discontinued .availability-status,
-.woocommerce-page div.product p.stock.discontinued .availability-status {
-    color: #ff0000; /* Red color */
-}
-
-.woocommerce div.product p.stock.discontinued .stock-icon::after,
-.woocommerce-page div.product p.stock.discontinued .stock-icon::after {
-    content: "\f100"; /* Icon */
-    color: #ff0000;
+.product-label.discontinued {
+    background-color: var(--red-color);
+    color: var(--white-color);
 }
