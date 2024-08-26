@@ -56,7 +56,7 @@
     content: attr(data-title);
     visibility: hidden;
     opacity: 0;
-    width: 110px;
+    width: 120px;
     background-color: var(--tooltip-background);
     color: var(--tooltip-text-color);
     text-align: center;
@@ -68,9 +68,9 @@
     left: 50%;
     transform: translateX(-50%);
     transition: opacity 0.3s;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.4;
-    white-space: break-spaces;
+    word-break: break-word;
 }
 
 /* Show the tooltip text on hover */
@@ -126,9 +126,11 @@
 .product-label.instore {
     background-color: var(--green-color);
     color: var(--white-color);
+    word-break: auto-phrase;
 }
 
 .product-label.discontinued {
     background-color: var(--red-color);
     color: var(--white-color);
+    word-break: auto-phrase;
 }
