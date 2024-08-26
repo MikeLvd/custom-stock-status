@@ -3,7 +3,7 @@
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.1.0
+ * Version: 1.1.2
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -101,19 +101,20 @@ class CustomStockStatusHandler
 
         $stock_status = $product->get_stock_status();
         $has_instore = false;
+        $all_outofstock = true;
         $all_discontinued = true;
 
         // Handle simple products
         if ($stock_status === 'instore') {
             $this->remove_out_of_stock_label($output);
             $output[] = '<span class="instore product-label">' . esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status') . '</span>';
-            return $output; // If simple product is instore, no need to check further
+            return $output;
         }
 
         if ($stock_status === 'discontinued') {
             $this->remove_out_of_stock_label($output);
             $output[] = '<span class="discontinued product-label">' . esc_html__('Καταργήθηκε', 'custom-stock-delivery-status') . '</span>';
-            return $output; // If simple product is discontinued, no need to check further
+            return $output;
         }
 
         // Handle variable products
@@ -125,8 +126,13 @@ class CustomStockStatusHandler
 
                 if ($variation_status === 'instore') {
                     $has_instore = true;
+                    $all_outofstock = false;
                     $all_discontinued = false;
                     break; // If any variation is instore, we prioritize it
+                }
+
+                if ($variation_status !== 'outofstock') {
+                    $all_outofstock = false;
                 }
 
                 if ($variation_status !== 'discontinued') {
@@ -140,10 +146,14 @@ class CustomStockStatusHandler
             } elseif ($all_discontinued) {
                 $this->remove_out_of_stock_label($output);
                 $output[] = '<span class="discontinued product-label">' . esc_html__('Καταργήθηκε', 'custom-stock-delivery-status') . '</span>';
-            } else {
+            } elseif ($all_outofstock) {
                 $this->remove_out_of_stock_label($output);
                 $output[] = '<span class="out-of-stock product-label">' . esc_html__('Sold out', 'woodmart') . '</span>';
             }
+        } elseif ($stock_status === 'outofstock') {
+            // Handle simple products that are out of stock
+            $this->remove_out_of_stock_label($output);
+            $output[] = '<span class="out-of-stock product-label">' . esc_html__('Sold out', 'woodmart') . '</span>';
         }
 
         return $output;
