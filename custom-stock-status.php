@@ -3,7 +3,7 @@
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.0.5
+ * Version: 1.0.8
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -99,34 +99,60 @@ class CustomStockStatusHandler
     {
         global $product;
 
-        // Check for variable product and its variations
+        $stock_status = $product->get_stock_status();
+        $has_instore_or_discontinued = false;
+
+        // Handle simple products
+        if ($stock_status === 'instore') {
+            $this->remove_out_of_stock_label($output);
+            $output[] = '<span class="instore product-label">' . esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status') . '</span>';
+            $has_instore_or_discontinued = true;
+        }
+
+        if ($stock_status === 'discontinued') {
+            $this->remove_out_of_stock_label($output);
+            $output[] = '<span class="discontinued product-label">' . esc_html__('Καταργήθηκε', 'custom-stock-delivery-status') . '</span>';
+            $has_instore_or_discontinued = true;
+        }
+
+        // Handle variable products
         if ($product->is_type('variable')) {
             $variations = $product->get_available_variations();
             foreach ($variations as $variation) {
                 $variation_obj = wc_get_product($variation['variation_id']);
-                if ($variation_obj->get_stock_status() === 'instore') {
-                    // Remove "Sold out" label if any variation is "instore"
-                    foreach ($output as $key => $label) {
-                        if (strpos($label, 'out-of-stock') !== false) {
-                            unset($output[$key]);
-                        }
-                    }
-                    break; // No need to check further once we find an instore variation
+                $variation_status = $variation_obj->get_stock_status();
+
+                if ($variation_status === 'instore') {
+                    $this->remove_out_of_stock_label($output);
+                    $output[] = '<span class="instore product-label">' . esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status') . '</span>';
+                    $has_instore_or_discontinued = true;
+                    break;
                 }
-            }
-        } else {
-            // Handle simple products
-            if ($product->get_stock_status() === 'instore') {
-                // Remove "Sold out" label if the product is "instore"
-                foreach ($output as $key => $label) {
-                    if (strpos($label, 'out-of-stock') !== false) {
-                        unset($output[$key]);
-                    }
+
+                if ($variation_status === 'discontinued') {
+                    $this->remove_out_of_stock_label($output);
+                    $output[] = '<span class="discontinued product-label">' . esc_html__('Καταργήθηκε', 'custom-stock-delivery-status') . '</span>';
+                    $has_instore_or_discontinued = true;
+                    break;
                 }
             }
         }
 
+        // If no instore or discontinued status, apply the default behavior
+        if (!$has_instore_or_discontinued && !$product->is_in_stock()) {
+            $output[] = '<span class="out-of-stock product-label">' . esc_html__('Sold out', 'woodmart') . '</span>';
+        }
+
         return $output;
+    }
+
+    private function remove_out_of_stock_label(&$output)
+    {
+        foreach ($output as $key => $label) {
+            if (strpos($label, 'out-of-stock') !== false) {
+                unset($output[$key]);
+            }
+        }
     }
 }
 
