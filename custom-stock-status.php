@@ -3,14 +3,16 @@
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
  */
+
 class CustomStockStatusHandler
 {
     private $custom_stock_statuses = array();
+
     public function __construct()
     {
         add_action('init', array($this, 'initializeCustomStockStatuses'));
@@ -19,7 +21,9 @@ class CustomStockStatusHandler
         add_filter('woocommerce_is_purchasable', array($this, 'validatePurchasable'), 10, 2);
         add_filter('woocommerce_get_availability_class', array($this, 'getStatusAvailabilityClass'), 10, 2);
         add_action('wp_enqueue_scripts', array($this, 'enqueue_custom_styles')); // Enqueue custom styles
+        add_filter('woodmart_product_label_output', array($this, 'modify_woodmart_labels'), 10, 1);
     }
+
     public function initializeCustomStockStatuses()
     {
         $this->custom_stock_statuses = array(
@@ -50,6 +54,7 @@ class CustomStockStatusHandler
             )
         );
     }
+
     public function filterProductStockStatusOptions($status)
     {
         foreach ($this->custom_stock_statuses as $key => $value) {
@@ -57,6 +62,7 @@ class CustomStockStatusHandler
         }
         return $status;
     }
+
     public function filterAvailabilityText($availability, $product)
     {
         $stock_status = $product->get_stock_status();
@@ -67,6 +73,7 @@ class CustomStockStatusHandler
         }
         return $availability;
     }
+
     public function validatePurchasable($purchasable, $product)
     {
         if ('discontinued' === $product->get_stock_status()) {
@@ -74,6 +81,7 @@ class CustomStockStatusHandler
         }
         return $purchasable;
     }
+
     public function getStatusAvailabilityClass($availability_class, $product)
     {
         if (array_key_exists($product->get_stock_status(), $this->custom_stock_statuses)) {
@@ -81,9 +89,45 @@ class CustomStockStatusHandler
         }
         return $availability_class;
     }
+
     public function enqueue_custom_styles()
     {
         wp_enqueue_style('custom-stock-status-styles', plugins_url('/css/custom-stock-status.css', __FILE__));
     }
+
+    public function modify_woodmart_labels($output)
+    {
+        global $product;
+
+        // Check for variable product and its variations
+        if ($product->is_type('variable')) {
+            $variations = $product->get_available_variations();
+            foreach ($variations as $variation) {
+                $variation_obj = wc_get_product($variation['variation_id']);
+                if ($variation_obj->get_stock_status() === 'instore') {
+                    // Remove "Sold out" label if any variation is "instore"
+                    foreach ($output as $key => $label) {
+                        if (strpos($label, 'out-of-stock') !== false) {
+                            unset($output[$key]);
+                        }
+                    }
+                    break; // No need to check further once we find an instore variation
+                }
+            }
+        } else {
+            // Handle simple products
+            if ($product->get_stock_status() === 'instore') {
+                // Remove "Sold out" label if the product is "instore"
+                foreach ($output as $key => $label) {
+                    if (strpos($label, 'out-of-stock') !== false) {
+                        unset($output[$key]);
+                    }
+                }
+            }
+        }
+
+        return $output;
+    }
 }
+
 new CustomStockStatusHandler();
