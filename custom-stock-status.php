@@ -47,7 +47,7 @@ class CustomStockStatusHandler
             'instore' => array(
                 'label' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
                 'message' => esc_html__('Ετοιμοπαράδοτο', 'custom-stock-delivery-status'),
-                'tooltip' => esc_html__('Αυτό το προϊόν είναι ετοιμοπαράδοτο και άμεσα διαθέσιμο στο κατάστημά μας', 'custom-stock-delivery-status')
+                'tooltip' => esc_html__('Αυτό το προϊόν είναι ετοιμοπαράδοτο και άμεσα διαθέσιμο στο κατάστημα μας', 'custom-stock-delivery-status')
             ),
             'discontinued' => array(
                 'label' => esc_html__('Καταργήθηκε', 'custom-stock-delivery-status'),
