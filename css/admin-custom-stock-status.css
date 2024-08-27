@@ -1,0 +1,15 @@
+/* Remove background color from mark elements */
+table.wp-list-table mark {
+    background-color: transparent;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Specific styles for custom stock statuses */
+table.wp-list-table mark.instore {
+    color: #28a745; /* Green color */
+}
+
+table.wp-list-table mark.discontinued {
+    color: #dc3545; /* Red color */
+}

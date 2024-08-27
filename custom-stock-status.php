@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Custom Stock Delivery Status by Golden Bath
  * Plugin URI: https://goldenbath.gr/
- * Description: Adds custom stock status and delivery time messages on product pages.
- * Version: 1.1.2
+ * Description: Adds custom stock status and delivery time messages on product pages and displays custom stock status in admin product list.
+ * Version: 1.2.0
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
@@ -21,7 +21,9 @@ class CustomStockStatusHandler
         add_filter('woocommerce_is_purchasable', array($this, 'validatePurchasable'), 10, 2);
         add_filter('woocommerce_get_availability_class', array($this, 'getStatusAvailabilityClass'), 10, 2);
         add_action('wp_enqueue_scripts', array($this, 'enqueue_custom_styles')); // Enqueue custom styles
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_styles')); // Enqueue admin styles
         add_filter('woodmart_product_label_output', array($this, 'modify_woodmart_labels'), 10, 1);
+        add_filter('woocommerce_admin_stock_html', array($this, 'customize_admin_stock_html'), 10, 2); // Hook for admin stock status display
     }
 
     public function initializeCustomStockStatuses()
@@ -92,7 +94,12 @@ class CustomStockStatusHandler
 
     public function enqueue_custom_styles()
     {
-        wp_enqueue_style('custom-stock-status-styles', plugins_url('/css/custom-stock-status.css', __FILE__));
+        wp_enqueue_style('front-custom-stock-status-styles', plugins_url('/css/front-custom-stock-status.css', __FILE__));
+    }
+
+    public function enqueue_admin_styles()
+    {
+        wp_enqueue_style('admin-custom-stock-status-styles', plugins_url('/css/admin-custom-stock-status.css', __FILE__), array('woocommerce_admin_styles'));
     }
 
     public function modify_woodmart_labels($output)
@@ -166,6 +173,53 @@ class CustomStockStatusHandler
                 unset($output[$key]);
             }
         }
+    }
+
+    public function customize_admin_stock_html($stock_html, $product)
+    {
+        // Handle variable products
+        if ($product->is_type('variable')) {
+            $variations = $product->get_children();
+            $priority = [
+                'discontinued' => 1,
+                'outofstock'   => 2,
+                'onbackorder'  => 3,
+                'instock'      => 4,
+                'instore'      => 5
+            ];
+
+            $highest_priority_status = null;
+            $highest_priority = 0;
+
+            foreach ($variations as $variation_id) {
+                $variation = wc_get_product($variation_id);
+                if ($variation) {
+                    $variation_status = $variation->get_stock_status();
+                    if (isset($priority[$variation_status]) && $priority[$variation_status] > $highest_priority) {
+                        $highest_priority_status = $variation_status;
+                        $highest_priority = $priority[$variation_status];
+                    }
+                }
+            }
+
+            if ($highest_priority_status && isset($this->custom_stock_statuses[$highest_priority_status])) {
+                $stock_html = '<mark class="' . esc_attr($highest_priority_status) . '">' . esc_html($this->custom_stock_statuses[$highest_priority_status]['label']) . '</mark>';
+                return $stock_html;
+            }
+        }
+
+        // Handle simple products or fallback for variable products
+        $stock_status = $product->get_stock_status();
+
+        if (array_key_exists($stock_status, $this->custom_stock_statuses)) {
+            $stock_html = '<mark class="' . esc_attr($stock_status) . '">' . esc_html($this->custom_stock_statuses[$stock_status]['label']) . '</mark>';
+        }
+
+        if ($product->managing_stock()) {
+            $stock_html .= ' (' . wc_stock_amount($product->get_stock_quantity()) . ')';
+        }
+
+        return $stock_html;
     }
 }
 
