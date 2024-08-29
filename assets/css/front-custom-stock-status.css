@@ -134,3 +134,13 @@
     color: var(--white-color);
     word-break: auto-phrase;
 }
+
+/* Styles for instore stock status in admin product list */
+table.wp-list-table mark.instore {
+    color: var(--green-color);
+}
+
+/* Styles for discontinued stock status in admin product list */
+table.wp-list-table mark.discontinued {
+    color: var(--red-color);
+}
