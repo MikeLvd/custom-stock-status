@@ -1,6 +1,6 @@
-(function ($) {
-    $(document).ready(function () {
-        $('.accordion-toggle').on('click', function (e) {
+(function($) {
+    $(document).ready(function() {
+        $('.accordion-toggle').on('click', function(e) {
             e.preventDefault();
             var $content = $(this).next('.accordion-content');
             if ($content.is(':visible')) {
@@ -12,7 +12,7 @@
             }
         });
 
-        $('.variation-stock-status-dropdown').on('change', function () {
+        $('.variation-stock-status-dropdown').on('change', function() {
             var variationId = $(this).data('variation-id');
             var newStatus = $(this).val();
             var security = admin_custom_stock_status_script.security;
@@ -26,16 +26,16 @@
                     new_status: newStatus,
                     security: security
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.success) {
-                        showToast(admin_custom_stock_status_script.translations.success, response.data.message);
+                        showToast('Success', response.data.message);
                     } else {
-                        showToast(admin_custom_stock_status_script.translations.error, response.data.message);
+                        showToast('Error', response.data.message);
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('AJAX Error: ', status, error);
-                    alert(admin_custom_stock_status_script.translations.update_error);
+                    alert('There was an error updating the stock status.');
                 }
             });
         });
@@ -43,6 +43,7 @@
 
     function showToast(title, message) {
         // Implementation of a toast notification
+        // For demonstration, we'll use a simple alert
         alert(title + ": " + message);
     }
 })(jQuery);
