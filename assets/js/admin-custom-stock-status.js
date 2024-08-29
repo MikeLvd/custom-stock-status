@@ -28,14 +28,14 @@
                 },
                 success: function (response) {
                     if (response.success) {
-                        showToast('Success', response.data.message);
+                        showToast(admin_custom_stock_status_script.translations.success, response.data.message);
                     } else {
-                        showToast('Error', response.data.message);
+                        showToast(admin_custom_stock_status_script.translations.error, response.data.message);
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('AJAX Error: ', status, error);
-                    alert('There was an error updating the stock status.');
+                    alert(admin_custom_stock_status_script.translations.update_error);
                 }
             });
         });

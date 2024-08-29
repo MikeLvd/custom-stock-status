@@ -102,12 +102,12 @@ class CustomStockStatusHandler
                 wc_delete_product_transients($variation->get_id());
 
                 // Send a success response
-                wp_send_json_success(array('message' => 'Stock status updated successfully.'));
+                wp_send_json_success(array('message' => __('Η κατάσταση των αποθεμάτων ενημερώθηκε επιτυχώς.', 'custom-stock-delivery-status')));
             } else {
-                wp_send_json_error(array('message' => 'Variation does not exist or failed to load.'));
+                wp_send_json_error(array('message' => __('Η παραλλαγή δεν υπάρχει ή απέτυχε να φορτωθεί.', 'custom-stock-delivery-status')));
             }
         } else {
-            wp_send_json_error(array('message' => 'Invalid variation ID or stock status.'));
+            wp_send_json_error(array('message' => __('Μη έγκυρο αναγνωριστικό παραλλαγής ή κατάσταση αποθέματος.', 'custom-stock-delivery-status')));
         }
         exit;
     }
@@ -133,7 +133,8 @@ class CustomStockStatusHandler
             $tooltip = $this->custom_stock_statuses[$stock_status]['tooltip'];
 
             return sprintf(
-                '<span class="availability-label">Διαθεσιμότητα:</span> <span class="availability-status">%s</span><span class="stock-icon" data-title="%s"></span>',
+                '<span class="availability-label">%s</span> <span class="availability-status">%s</span><span class="stock-icon" data-title="%s"></span>',
+                esc_html__('Διαθεσιμότητα:', 'custom-stock-delivery-status'),
                 esc_html($message),
                 esc_attr($tooltip)
             );
@@ -209,12 +210,12 @@ class CustomStockStatusHandler
                 $output[] = '<span class="discontinued product-label">' . esc_html__('Καταργήθηκε', 'custom-stock-delivery-status') . '</span>';
             } elseif ($all_outofstock) {
                 $this->remove_out_of_stock_label($output);
-                $output[] = '<span class="out-of-stock product-label">' . esc_html__('Sold out', 'woodmart') . '</span>';
+                $output[] = '<span class="out-of-stock product-label">' . esc_html__('Εξαντλήθηκε', 'woodmart') . '</span>';
             }
         } elseif ($stock_status === 'outofstock') {
             // Handle simple products that are out of stock
             $this->remove_out_of_stock_label($output);
-            $output[] = '<span class="out-of-stock product-label">' . esc_html__('Sold out', 'woodmart') . '</span>';
+            $output[] = '<span class="out-of-stock product-label">' . esc_html__('Εξαντλήθηκε', 'woodmart') . '</span>';
         }
 
         return $output;

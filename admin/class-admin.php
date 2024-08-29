@@ -19,7 +19,7 @@ class CustomStockStatusAdmin
         foreach ($columns as $key => $column) {
             $reordered_columns[$key] = $column;
             if ('sku' === $key) {
-                $reordered_columns['variation_stock_status'] = __('Variation Stock', 'custom-stock-delivery-status');
+                $reordered_columns['variation_stock_status'] = __('Απόθεμα παραλλαγών', 'custom-stock-delivery-status');
             }
         }
         return $reordered_columns;
@@ -36,7 +36,7 @@ class CustomStockStatusAdmin
                 foreach ($product->get_children() as $child_id) {
                     $variation = wc_get_product($child_id);
                     if ($variation && $variation->exists()) {
-                        $sku = $variation->get_sku() ?: __('(No SKU)', 'custom-stock-delivery-status');
+                        $sku = $variation->get_sku() ?: __('(Κανένας κωδικός)', 'custom-stock-delivery-status');
                         $status = $variation->get_stock_status();
                         $status_label = $this->custom_stock_statuses[$status]['label'];
 
