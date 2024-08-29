@@ -1,12 +1,13 @@
 <?php
 /**
- * Plugin Name: Custom Stock Delivery Status by Golden Bath
+ * Plugin Name: Custom Stock Delivery Status For Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages and displays custom stock status in admin product list.
  * Version: 1.5.0
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
+ * Domain Path: /languages
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
