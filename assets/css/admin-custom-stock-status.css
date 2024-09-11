@@ -1,17 +1,15 @@
-/* Remove background color from mark elements */
 table.wp-list-table mark {
     background-color: transparent;
     font-weight: 700;
-    line-height: 1;
+    line-height: 2.5;
 }
 
-/* Specific styles for custom stock statuses */
 table.wp-list-table mark.instore {
-    color: #28a745; /* Green color */
+    color: #28a745;
 }
 
 table.wp-list-table mark.discontinued {
-    color: #dc3545; /* Red color */
+    color: #dc3545;
 }
 
 .stock-status-accordion {
@@ -60,7 +58,7 @@ table.wp-list-table mark.discontinued {
 }
 
 .variation-sku {
-    font-weight: bold; /* Example styling for SKU */
+    font-weight: bold;
 }
 
 .widefat .column-variation_stock_status {
@@ -69,4 +67,23 @@ table.wp-list-table mark.discontinued {
 
 .variation-stock-status-dropdown {
     width: 60%;
+}
+
+.sku-dropdown-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    gap: 10px;
+}
+
+.sku-dropdown-container .variation-sku {
+    white-space: nowrap;
+    overflow: visible;
+    flex-grow: 0;
+}
+
+.sku-dropdown-container .variation-stock-status-dropdown {
+    flex-shrink: 0;
+    min-width: 150px;
+    width: auto;
 }

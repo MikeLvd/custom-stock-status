@@ -3,12 +3,16 @@
  * Plugin Name: Custom Stock Delivery Status For Golden Bath
  * Plugin URI: https://goldenbath.gr/
  * Description: Adds custom stock status and delivery time messages on product pages and displays custom stock status in admin product list.
- * Version: 1.4.0
+ * Version: 1.4.5
  * Author: Mike Lavdanitis
  * Author URI: https://goldenbath.gr/
  * Text Domain: custom-stock-delivery-status
  * Domain Path: /languages
  */
+
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly
+}
 
 class CustomStockStatusHandler
 {
@@ -45,7 +49,7 @@ class CustomStockStatusHandler
 
         // Get the variation ID and the new stock status
         $variation_id = filter_input(INPUT_POST, 'variation_id', FILTER_VALIDATE_INT);
-        $new_status = filter_input(INPUT_POST, 'new_status', FILTER_SANITIZE_STRING);
+        $new_status = filter_input(INPUT_POST, 'new_status', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         // Update the stock status of the variation
         if ($variation_id && in_array($new_status, array_keys($this->custom_stock_statuses))) {
@@ -142,7 +146,7 @@ class CustomStockStatusHandler
 
     public function enqueue_custom_styles()
     {
-        wp_enqueue_style('front-custom-stock-status-styles', plugins_url('/css/front-custom-stock-status.css', __FILE__), array(), '1.0', 'all');
+        wp_enqueue_style('front-custom-stock-status-styles', plugins_url('/assets/css/front-custom-stock-status.css', __FILE__));
     }
 
     public function modify_woodmart_labels($output)
@@ -288,7 +292,8 @@ class CustomStockStatusHandler
                             $dropdown .= '<option value="' . esc_attr($status_key) . '" ' . esc_attr($selected) . '>' . esc_html($status_data['label']) . '</option>';
                         }
                         $dropdown .= '</select>';
-                        $stock_statuses .= '<p><span class="variation-sku">' . esc_html($sku) . '</span> = ' . $dropdown . '</p>';
+                        // Wrap SKU and dropdown in a container
+                        $stock_statuses .= '<div class="sku-dropdown-container"><span class="variation-sku">' . esc_html($sku) . '</span> ' . $dropdown . '</div>';
                     }
                 }
                 $stock_statuses .= '</div></div>';
@@ -301,9 +306,13 @@ class CustomStockStatusHandler
 
     public function enqueue_admin_styles()
     {
-        wp_enqueue_style('admin-custom-stock-status-styles', plugins_url('/assets/css/admin-custom-stock-status.css', __FILE__), array('woocommerce_admin_styles'), '1.0', 'all');
-        wp_enqueue_script('admin-custom-stock-status-script', plugins_url('/assets/js/admin-custom-stock-status.js', __FILE__), array('jquery'), '1.0', true);
-        // Localize the script with nonce for security
+        // Correctly enqueue the admin-specific CSS file
+        wp_enqueue_style('admin-custom-stock-status-styles', plugins_url('/assets/css/admin-custom-stock-status.css', __FILE__));
+
+        // Enqueue the admin-specific JavaScript file
+        wp_enqueue_script('admin-custom-stock-status-script', plugins_url('/assets/js/admin-custom-stock-status.js', __FILE__));
+
+        // Localize script for AJAX handling
         wp_localize_script('admin-custom-stock-status-script', 'admin_custom_stock_status_script', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'security' => wp_create_nonce('update_stock_status_nonce')
